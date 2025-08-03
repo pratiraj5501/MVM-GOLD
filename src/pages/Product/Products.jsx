@@ -47,7 +47,7 @@ const Products = () => {
   return (
     <div>
 
-      <div className=' '>
+      <div className=' border-3 border-red-600'>
         <div
           style={{ backgroundImage: `url(${collectionBanner})` }}
           className="bg-cover flex justify-center items-center shadow-2xl bg-no-repeat bg-center b-height w-full"
@@ -69,7 +69,7 @@ const Products = () => {
 
         <div className='container'>
           <div className='flex justify-end pt-6'>
-            <p className='font-light text-sm'>200 Results</p>
+            <p className='font-light text-sm'>2005 Results</p>
           </div>
           <div className="flex min-h-screen px-1 flex-col sm:flex-row  py-15">
             <div className="w-[284px]  p-4">

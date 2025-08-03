@@ -71,7 +71,7 @@ const Gallery = () => {
       <div className=''>
         <div
           className="bg-cover bg-no-repeat bg-center w-full min-h-screen flex flex-col"
-          style={{ backgroundImage: `url(${img})`, minHeight: "100vh" }}
+          // style={{ backgroundImage: `url(${img})`, minHeight: "100vh" }}
         >
           <div className='container max-auto '>
             <nav className="bg-transparent py-8 px-0 mb-5">
@@ -79,22 +79,22 @@ const Gallery = () => {
 
                 <Link to="/">
                   <img
-                    src={img3}
+                    src={logo}
                     alt="Logo"
                     className="h-20 w-auto"
                   />
                 </Link>
               </div>
             </nav>
-            <div className='flex justify-center items-center flex-col pt-4 pb-20 '>
+            <div className='flex justify-center items-center flex-col pt-4 pb-20   '>
 
-              <div className='flex  gap-7 flex-col md:flex-row'>
-                <div className='w-full max-w-[230px]'>
+              <div className='flex  gap-7  flex-col items-center justify-center md:flex-row'>
+                <div className='w-full max-w-[230px] '>
 
                   <img src={title} alt="" className='w-full max-w-[200px] mb-1' />
                   <img src={strip2} alt="w-full " />
-                  <h3 className='text-white text-[18px] font-medium py-2'>MVM Jewellers च्या 
-अविस्मरणीय क्षणांची झलक!</h3>
+                  <h3 className='text-[#747474] text-[18px] font-medium py-2'>MVM Jewellers च्या 
+                        अविस्मरणीय क्षणांची झलक!</h3>
                   <img src={strip2} alt="w-full " />
                 </div>
                 <div className=''>
@@ -113,6 +113,7 @@ const Gallery = () => {
                   <div
                     key={index}
                     className="relative group effect effect-six overflow-hidden   shadow-lg"
+                    onClick={navigateGalleryView}
                   >
                     <img
                       src={gal.src}

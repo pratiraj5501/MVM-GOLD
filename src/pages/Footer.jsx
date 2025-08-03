@@ -1,9 +1,92 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FaFacebookF, FaInstagram, FaTwitter, FaTelegram } from "react-icons/fa";
-
+import footerLogo from "../assets/mobile/footer/footerLogo.svg"
 const Footer = () => {
+   const [isMobileView, setIsMobileView] = useState(window.innerWidth <= 550);
+   // Handle window resize to update view
+     useEffect(() => {
+       const handleResize = () => {
+         setIsMobileView(window.innerWidth <= 550);
+       };
+   
+       window.addEventListener("resize", handleResize);
+       return () => window.removeEventListener("resize", handleResize);
+     }, []);
   return (
-    <footer className="bg-[#3E4095] text-white py-10 px-6 roboto">
+    <>
+     {isMobileView ? (<> 
+     <footer class="bg-[#423F90] text-white px-6 py-8 rounded-t-2xl">
+  {/* <!-- Logo --> q */}
+  <div class="flex justify-start mb-6">
+    <img src={footerLogo} alt="MVM Logo" class="h-10" />
+  </div>
+
+  {/* <!-- Links Grid --> */}
+  <div class="grid grid-cols-2 gap-6 mb-6">
+    {/* <!-- Useful Links --> */}
+    <div>
+      <h3 class="font-semibold text-2xl mb-3">useful Links</h3>
+      <ul class="space-y-2 text-md text-white/90">
+        <li>Delivery Information</li>
+        <li>International Shipping</li>
+        <li>Payment Options</li>
+        <li>Return</li>
+        <li>Product five</li>
+      </ul>
+    </div>
+
+    {/* <!-- Product Links --> */}
+    <div>
+      <h3 class="font-semibold text-2xl mb-3">Product</h3>
+      <ul class="space-y-2 text-md text-white/90">
+        <li>Blog</li>
+        <li>Offers & Contest</li>
+        <li>Help & FAQS</li>
+        <li>About MVM</li>
+      </ul>
+    </div>
+  </div>
+
+  <hr class="border-white/30 mb-4" />
+
+  {/* <!-- Contact + Social --> */}
+  <div class="text-sm">
+    <p class="font-semibold mb-1">Contact Us</p>
+    <p class="mb-4">1800-266-0023</p>
+
+    <p class="font-semibold mb-1 text-md">Social</p>
+    <div class="flex gap-3 mt-2">
+      {/* <!-- Social icons (replace src with actual icons if needed) --> */}
+      <FaFacebookF className=" w-7 h-7 p-1 bg-white text-gray-700 rounded-xl"/>
+      <FaInstagram className=" w-7 h-7 p-1 bg-white text-gray-700 rounded-xl " />
+      
+    </div>
+  </div>
+</footer>
+
+     
+     
+     
+     
+     
+     
+     
+     </>)
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     :(<>
+      <footer className="bg-[#3E4095] text-white py-10 px-6 roboto">
       <div className="container mx-auto">
         
         <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 pb-8 border-b border-white/20">
@@ -95,6 +178,13 @@ const Footer = () => {
         </div>
       </div>
     </footer>
+
+
+</>
+     )}
+   
+    </>
+
   );
 };
 

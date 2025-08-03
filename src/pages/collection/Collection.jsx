@@ -139,6 +139,8 @@ const Collection = () => {
   const { setSelectedProduct,setCollectionTitle,setCollectionBanner  } = useContext(ProductContext);
   const handleProductChange = (item, title,banner) => {
     console.log("Item", item);
+    console.log("title", title);
+    console.log("banner", banner);
     setSelectedProduct(item);
     setCollectionTitle(title);
     setCollectionBanner(banner);
@@ -191,7 +193,7 @@ const Collection = () => {
                   {collection.items.map((item, i) => (
                     <div
                       key={i}
-                      className="bg-white rounded-lg shadow-md overflow-hidden transition-transform 
+                      className="bg-white border-2 border-red-700 rounded-lg shadow-md overflow-hidden transition-transform 
              duration-300 ease-in-out z-10 hover:translate-y-[-10px] hover:shadow-2xl hover:scale-105"
              onClick={() => handleProductChange(item, collection.title,collection.banner)}
              >

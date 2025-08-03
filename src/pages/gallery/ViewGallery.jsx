@@ -50,12 +50,14 @@ const ViewGallery = () => {
         <>
     
     <div>
-      <div className="bg-cover flex justify-center items-center bg-no-repeat bg-center w-full " style={{ backgroundImage: `url(${img})` }}>
+      <div className="bg-cover flex justify-center items-center bg-no-repeat bg-center w-full " 
+      // style={{ backgroundImage: `url(${img})` }}
+      >
         <div className="container max-auto">
           <nav className="bg-transparent py-8 px-0 mb-5">
             <div className=" flex justify-between items-center">
               <Link to="/">
-                <img src={img3} alt="Logo" className="h-20 w-auto" />
+                <img src={logo} alt="Logo" className="h-20 w-auto" />
               </Link>
             </div>
           </nav>
@@ -63,9 +65,9 @@ const ViewGallery = () => {
           <div className=" flex justify-center items-center flex-col pt-8 pb-48">
             <div className="flex gap-7 flex-col">
               <div>
-                <img src={title} alt="" className="mb-1" />
+                <img src={galleryTitle} alt="" className="mb-1" />
               </div>
-              <div className="text-[18px]  font-medium text-white w-full">
+              <div className="text-[18px]  font-medium text-[#717171] w-full">
                 <p>
                   आमच्या प्रवासातील खास क्षण, भव्य उद्घाटन सोहळे, विशेष कार्यक्रम आणि ग्राहकांसोबतच्या आठवणी यांचे सुंदर क्षणचित्र येथे पाहा. प्रत्येक
                   कार्यक्रम हा केवळ एक प्रसंग नसून, तो आमच्या प्रवासातील एक सोनेरी पान आहे. आमच्या उत्साहपूर्ण आणि दैदिप्यमान क्षणांना तुमच्यासोबत
@@ -75,11 +77,11 @@ const ViewGallery = () => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-20">
-              <div className="md:col-span-1 overflow-hidden">
+              <div className="md:col-span-1 overflow-hidden   ">
                 <img
                   src={galleryimg[0].src}
                   alt={galleryimg[0].title}
-                  className="w-full h-full border-design object-cover transition-transform duration-300 hover:scale-105 cursor-pointer"
+                  className="w-full h-full border-design rounded-lg object-cover transition-transform duration-300 hover:scale-105 cursor-pointer"
                   onClick={() => {
                     setIndex(0);
                     setOpen(true);
@@ -87,7 +89,7 @@ const ViewGallery = () => {
                 />
               </div>
 
-              <div className="md:col-span-2 grid sm:grid-cols-2 md:px-3 px-0 grid-cols-1 gap-4">
+              <div className="md:col-span-2 grid sm:grid-cols-2 rounded-lg   md:px-3 px-0 grid-cols-1 gap-4">
                 {galleryimg.slice(1, 5).map((gal, i) => (
                   <div key={i} className="overflow-hidden shadow-lg">
                     <img
@@ -103,7 +105,7 @@ const ViewGallery = () => {
                 ))}
               </div>
 
-              <div className="md:col-span-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+              <div className="md:col-span-3 grid grid-cols-1 rounded-lg sm:grid-cols-2 md:grid-cols-4 gap-6">
                 {galleryimg.slice(4, 9).map((gal, i) => (
                   <div key={i} className="overflow-hidden shadow-lg">
                     <img
@@ -172,11 +174,11 @@ const ViewGallery = () => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-20">
-              <div className="md:col-span-1 overflow-hidden">
+              <div className="md:col-span-1 overflow-hidden ">
                 <img
                   src={galleryimg[0].src}
                   alt={galleryimg[0].title}
-                  className="w-full h-full border-design object-cover transition-transform duration-300 hover:scale-105 cursor-pointer"
+                  className="w-full rounded-lg h-full border-design object-cover transition-transform duration-300 hover:scale-105 cursor-pointer"
                   onClick={() => {
                     setIndex(0);
                     setOpen(true);
@@ -184,13 +186,13 @@ const ViewGallery = () => {
                 />
               </div>
 
-              <div className="md:col-span-2 grid sm:grid-cols-2 md:px-3 px-0 grid-cols-1 gap-4">
+              <div className="md:col-span-2 grid sm:grid-cols-2     md:px-3 px-0 grid-cols-1 gap-4">
                 {galleryimg.slice(1, 5).map((gal, i) => (
-                  <div key={i} className="overflow-hidden shadow-lg">
+                  <div key={i} className="overflow-hidden  shadow-lg">
                     <img
                       src={gal.src}
                       alt={gal.title}
-                      className="w-full h-full border-design object-cover transition-transform duration-300 hover:scale-105 cursor-pointer"
+                      className="w-full rounded-lg  h-full border-design object-cover transition-transform duration-300 hover:scale-105 cursor-pointer"
                       onClick={() => {
                         setIndex(i + 1);
                         setOpen(true);
@@ -203,7 +205,7 @@ const ViewGallery = () => {
               <div className="md:col-span-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
                 {galleryimg.slice(4, 9).map((gal, i) => (
                   <div key={i} className="overflow-hidden shadow-lg">
-                    <img
+                    {/* <img
                       src={gal.src}
                       alt={gal.title}
                       className="w-full h-full border-design object-cover transition-transform duration-300 hover:scale-105 cursor-pointer"
@@ -211,7 +213,7 @@ const ViewGallery = () => {
                         setIndex(i + 4);
                         setOpen(true);
                       }}
-                    />
+                    /> */}
                   </div>
                 ))}
               </div>
