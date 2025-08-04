@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import img1 from "../../assets/logo.png"
 import img2 from "../../assets/collection/collection.png"
 import img3 from "../../assets/collection/bg.png"
@@ -53,6 +53,7 @@ import { Link } from "react-router-dom";
 import { FaArrowRight } from "react-icons/fa";
 import { ROUTES } from "../../constant";
 import { ProductContext } from "../context/ProductContext";
+import { ShowCaseCards } from "../../apiServices/product";
 const collections = [
   {
     title: i1,
@@ -146,12 +147,24 @@ const Collection = () => {
     setCollectionBanner(banner);
 
   };
+const getTheData=async ()=> {
+  try {
+    const response=await ShowCaseCards();
+    console.log("done in first attempt bro ewwwwww",response)
+  } catch (error) {
+    
+  }
+  
+}
+  useEffect(()=>{
+getTheData()
+  },[])
   return (
     <div
       className="relative bg-repeat bg-contain bg-center z-10 p-6"
       style={{ backgroundImage: `url(${img3})` }}
     >
-      <div className="max-w-7xl mx-auto relative ">
+      <div className="max-w-7xl mx-auto relative border-2 border-red-600 ">
         <nav className="bg-transparent px-10 mb-10">
           <div className="container mx-auto flex justify-between items-center">
             <img src={img2} alt="" className='h-12 w-auto' />
@@ -177,7 +190,7 @@ const Collection = () => {
                 <div key={i} className="container mb-10"
                 
                 >
-                  <div className="flex items-end pt-8 pb-2 relative">
+                  <div className="flex items-end pt-8 pb-2 relative border-2">
                     {/* <img src={collection.banner} alt="" className="z-10 h-16" /> */}
                     <img src={collection.title} alt="" className="z-10 h-16" />
 
