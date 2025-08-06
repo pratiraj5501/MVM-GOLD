@@ -10,6 +10,8 @@ const ROUTES = {
 
     ABOUT: "/about",
     CONTACT: "/contact",
+    NEWPRODUCTVIEW:'/newproductview'
+    
 };
 
 const NAV_LINKS = [
@@ -22,6 +24,7 @@ const NAV_LINKS = [
     { name: "Blog", path: ROUTES.BLOG },
     { name: "Product", path: ROUTES.PRODUCTS },
     { name: "Productview", path: ROUTES.PRODUCTVIEW },
+     { name: "newproductview", path: ROUTES.NEWPRODUCTVIEW },
 
     { name: "About Us", path: ROUTES.ABOUT },
     { name: "Contact Us", path: ROUTES.CONTACT },

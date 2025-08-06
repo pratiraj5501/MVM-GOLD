@@ -1,7 +1,11 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { motion } from "framer-motion";
+import { getAllCircularBannerImages } from '../../apiServices/circularBannerService';
+import { FILE_URL } from '../../config/config';
+
 
 const CircularStatus = () => {
+  const [circularBannerList,setCircularBannerList]=useState([])
     const statusVariants = {
   hidden: { opacity: 0, y: 30 },
   visible: (i) => ({
@@ -14,18 +18,20 @@ const CircularStatus = () => {
     },
   }),
 }
-// const statusVariants = {
-//   hidden: { opacity: 0, filter: "blur(5px)" },
-//   visible: (i) => ({
-//     opacity: 1,
-//     filter: "blur(0px)",
-//     transition: {
-//       delay: i * 0.2,
-//       duration: 1,
-//       ease: "easeOut",
-//     },
-//   }),
-// };
+const fetchAllCircularBanners=async()=>{
+  try {
+    const response=await getAllCircularBannerImages(); 
+    console.log("all response for circular banner bro--->",response.data.data)
+    setCircularBannerList(response.data.data)
+  } catch (error) {
+    
+  }
+
+}
+useEffect(()=>{
+  fetchAllCircularBanners()
+
+},[])
  
   return (
         <motion.div
@@ -37,61 +43,28 @@ const CircularStatus = () => {
     >   
     <div className='w-full overflow-x-auto pt-24 md:hidden'>
     <div className='flex flex-row gap-4 px-4'>
-        <div className='flex flex-col items-center gap-2'>
+      {
+        circularBannerList?.map((banner)=>(
+          
+          <div className='flex flex-col items-center gap-2'>
             <div className='w-20 h-20 rounded-full p-[2px] bg-gradient-to-tr from-pink-500 via-red-500 to bg-yellow-500'>
             <div className='w-full h-full rounded-full bg-white p-[2px] '>
-                <img src="https://i.pravatar.cc/150?img=1" alt=""  className='w-full h-full rounded-full object-cover' />
+                <img src={`${FILE_URL}${banner?.image}`} alt=""  className='w-full h-full rounded-full object-cover' />
             </div>
             
             </div>
-            <p className='text-sm text-gray-700'>label</p>
-
-        </div>
-        {/* this is second  */}
-         <div className='flex flex-col items-center gap-2'>
-            <div className='w-20 h-20 rounded-full p-[2px] bg-gradient-to-tr from-pink-500 via-red-500 to bg-yellow-500'>
-            <div className='w-full h-full rounded-full bg-white p-[2px] '>
-                <img src="https://i.pravatar.cc/150?img=1" alt=""  className='w-full h-full rounded-full object-cover' />
-            </div>
-            
-            </div>
-            <p className='text-sm text-gray-700'>label</p>
+            <p className='text-sm text-gray-700'>{banner.title}</p>
 
         </div>
 
-           {/* this is third  */}
-         <div className='flex flex-col items-center gap-2'>
-            <div className='w-20 h-20 rounded-full p-[2px] bg-gradient-to-tr from-pink-500 via-red-500 to bg-yellow-500'>
-            <div className='w-full h-full rounded-full bg-white p-[2px] '>
-                <img src="https://i.pravatar.cc/150?img=1" alt=""  className='w-full h-full rounded-full object-cover' />
-            </div>
-            
-            </div>
-            <p className='text-sm text-gray-700'>label</p>
+        ))
+      }
+        
+       
 
-        </div>
-            {/* this is forth */}
-         <div className='flex flex-col items-center gap-2'>
-            <div className='w-20 h-20 rounded-full p-[2px] bg-gradient-to-tr from-pink-500 via-red-500 to bg-yellow-500'>
-            <div className='w-full h-full rounded-full bg-white p-[2px] '>
-                <img src="https://i.pravatar.cc/150?img=1" alt=""  className='w-full h-full rounded-full object-cover' />
-            </div>
-            
-            </div>
-            <p className='text-sm text-gray-700'>label</p>
-
-        </div>
-          {/* this is forth */}
-         <div className='flex flex-col items-center gap-2'>
-            <div className='w-20 h-20 rounded-full p-[2px] bg-gradient-to-tr from-pink-500 via-red-500 to bg-yellow-500'>
-            <div className='w-full h-full rounded-full bg-white p-[2px] '>
-                <img src="https://i.pravatar.cc/150?img=1" alt=""  className='w-full h-full rounded-full object-cover' />
-            </div>
-            
-            </div>
-            <p className='text-sm text-gray-700'>label</p>
-
-        </div>
+          
+          
+        
 
       
     </div>  

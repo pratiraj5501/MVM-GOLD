@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import img1 from "../../assets/logo.png"
 import img2 from "../../assets/collection/collection.png"
 import img3 from "../../assets/collection/bg.png"
@@ -11,7 +11,9 @@ import i5 from "../../assets/collection/img5.png"
 import i6 from "../../assets/collection/img6.png"
 import i7 from "../../assets/collection/img7.png"
 import p1 from "../../assets/purusharth/pu1.png";
-import n1 from "../../assets/collection/n1.jpeg";
+// import n1 from "../../assets/collection/n1.jpeg";
+import n1 from "../../assets/collection/nv_Copy5.jpg"
+// import n1 from "../../assets/collection/nv.jpg"
 import n2 from "../../assets/collection/n2.jpg";
 import n3 from "../../assets/collection/n3.webp";
 import n4 from "../../assets/collection/n4.jpg";
@@ -49,11 +51,12 @@ import b6 from "../../assets/collection/b6.png";
 import b7 from "../../assets/collection/b7.png";
 
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaArrowRight } from "react-icons/fa";
 import { ROUTES } from "../../constant";
 import { ProductContext } from "../context/ProductContext";
-import { ShowCaseCards } from "../../apiServices/product";
+import { getMahasanskrutiProducts, getModrenProducts, ShowCaseCards } from "../../apiServices/product";
+import { FILE_URL } from "../../config/config";
 const collections = [
   {
     title: i1,
@@ -135,7 +138,16 @@ const collections = [
 ];
 
 const Collection = () => {
-
+  const navigate=useNavigate();
+  const [apiData,setApiData]=useState([]);
+  const [navraiData,setNavraiData]=useState("");
+  const [purusharthData,setPurusharthData]=useState("")
+  const [paramparaData,setParamparaData]=useState("");
+  const [saundaryShrungar,setSaundaryaShrungar]=useState("")
+  const [sushobhitaData,setSushobhitaData]=useState("");
+  // *************************************************************
+  const[mahaSanskrutiProducts,setMahasanskrutiProducts]=useState([])
+  const [modernProducts,setModernProducts]=useState([])
 
   const { setSelectedProduct,setCollectionTitle,setCollectionBanner  } = useContext(ProductContext);
   const handleProductChange = (item, title,banner) => {
@@ -147,18 +159,54 @@ const Collection = () => {
     setCollectionBanner(banner);
 
   };
+
 const getTheData=async ()=> {
   try {
     const response=await ShowCaseCards();
-    console.log("done in first attempt bro ewwwwww",response)
+    setApiData(response.data)
+  } catch (error) { 
+  }
+}
+
+const fetchMahaSanskrutiProducts= async ()=> {
+  try {
+    const response=await getMahasanskrutiProducts();
+    // console.log("done in first attempt bro ewwwwww",response.data.data)
+    setMahasanskrutiProducts(response?.data?.data)
+    
   } catch (error) {
     
   }
   
 }
+const fetchModrenProducts=async function () {
+  try {
+    const response=await getModrenProducts();
+    setModernProducts(response?.data?.data)
+  } catch (error) {
+    
+  }
+  
+}
+
+
+
   useEffect(()=>{
 getTheData()
+fetchMahaSanskrutiProducts();
+fetchModrenProducts();
   },[])
+
+  useEffect(()=>{
+    setNavraiData(apiData[0]);
+    setPurusharthData(apiData[1]);
+    setParamparaData(apiData[2])
+    setSaundaryaShrungar(apiData[3]);
+    setSushobhitaData(apiData[4]);
+
+
+  },[apiData])
+  console.log("navraiData data ",navraiData)
   return (
     <div
       className="relative bg-repeat bg-contain bg-center z-10 p-6"
@@ -183,16 +231,11 @@ getTheData()
           <div className="px-10 py-5">
 
             <>
-
-            </>
-            {collections.map((collection, i) =>
-              <>
-                <div key={i} className="container mb-10"
-                
-                >
-                  <div className="flex items-end pt-8 pb-2 relative border-2">
+            {/*  ************************** ** this is for testing Navrai ********************** */}
+            <div  className="container mb-10">
+               <div className="flex items-end pt-8 pb-2 relative border-2">
                     {/* <img src={collection.banner} alt="" className="z-10 h-16" /> */}
-                    <img src={collection.title} alt="" className="z-10 h-16" />
+                    <img src={i1} alt="" className="z-10 h-16" />
 
                     <div className="flex-grow border-b border-dashed border-white mx-3"></div>
 
@@ -201,28 +244,47 @@ getTheData()
             bg-repeat-y bg-[length:2px_5px]">
                     </div>
                   </div>
-                </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8  flex flex-row">
-                  {collection.items.map((item, i) => (
+
+
+
+
+            </div>
+
+            {
+              navraiData?.products
+?.length>0 &&(
+                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8  flex flex-row">
+                  {navraiData.products.map((item, i) => (
                     <div
                       key={i}
                       className="bg-white border-2 border-red-700 rounded-lg shadow-md overflow-hidden transition-transform 
              duration-300 ease-in-out z-10 hover:translate-y-[-10px] hover:shadow-2xl hover:scale-105"
-             onClick={() => handleProductChange(item, collection.title,collection.banner)}
+            //  onClick={() => handleProductChange(item, collection.title,collection.banner)}
+            onClick={() =>
+  navigate("/newproductview", {
+    state: {
+      titleId: item.titleId,
+      categoryId: item.categoryId,
+      productId: item._id,
+    },
+  })
+}
+
              >
                       <Link
                         to={{
                           pathname: ROUTES.PRODUCTS,
-                          state: { product: item, title: collection.title ,banner:collection.banner},
+                          // state: { product: item, title: collection.title ,banner:collection.banner},
                         }}
                       >
 
-                        <img src={item.img} alt={item.name} className="w-full h-48 object-cover" />
+                        <img src={FILE_URL + item.images[0]} alt={item.name} className="w-full h-48 object-cover" />
+
                       </Link>
                       <div className="px-4 py-3">
-                        <h3 className="text-lg pb-1 text-[#121212] font-medium">{item.name}</h3>
+                        <h3 className="text-lg pb-1 text-[#121212] font-medium">{item.shortTitle|| "no"}</h3>
                         <p className="text-sm pb-1 text-gray-500 break-words line-clamp-2">
-                          {item.desc}
+                          {item.description}
                         </p>
                         <p className="text-sm pt-1 text-gray-800">₹{item.price}</p>
                         <div className="flex justify-end py-2">
@@ -235,8 +297,409 @@ getTheData()
                     </div>
                   ))}
                 </div>
-              </>
-            )}
+              )
+            }
+
+             {/*  ************************** ** this is for testing Navrai ********************* */}
+
+
+             {/* *****************This is for Purusharth testing******************************* */}
+              <div  className="container mb-10">
+               <div className="flex items-end pt-8 pb-2 relative border-2">
+                    {/* <img src={collection.banner} alt="" className="z-10 h-16" /> */}
+                    <img src={i2} alt="" className="z-10 h-16" />
+
+                    <div className="flex-grow border-b border-dashed border-white mx-3"></div>
+
+                    <div className="absolute right-[50px] top-0 h-full w-[1px] 
+            bg-[radial-gradient(circle,_white_10%,_transparent_20%)] 
+            bg-repeat-y bg-[length:2px_5px]">
+                    </div>
+                  </div>
+
+            </div>
+            
+            {
+              purusharthData?.products
+?.length>0 &&(
+                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8  flex flex-row">
+                  {purusharthData.products.map((item, i) => (
+                    <div
+                      key={i}
+                      className="bg-white border-2 border-red-700 rounded-lg shadow-md overflow-hidden transition-transform 
+             duration-300 ease-in-out z-10 hover:translate-y-[-10px] hover:shadow-2xl hover:scale-105"
+            //  onClick={() => handleProductChange(item, collection.title,collection.banner)}
+            onClick={() =>
+  navigate("/newproductview", {
+    state: {
+      titleId: item.titleId,
+      categoryId: item.categoryId,
+      productId: item._id,
+    },
+  })
+}
+             >
+                      <Link
+                        to={{
+                          pathname: ROUTES.PRODUCTS,
+                          // state: { product: item, title: collection.title ,banner:collection.banner},
+                        }}
+                      >
+
+                        <img src={FILE_URL + item.images[0]} alt={item.name} className="w-full h-48 object-cover" />
+
+                      </Link>
+                      <div className="px-4 py-3">
+                        <h3 className="text-lg pb-1 text-[#121212] font-medium">{item.shortTitle|| "no"}</h3>
+                        <p className="text-sm pb-1 text-gray-500 break-words line-clamp-2">
+                          {item.description}
+                        </p>
+                        <p className="text-sm pt-1 text-gray-800">₹{item.price}</p>
+                        <div className="flex justify-end py-2">
+                          <Link to={ROUTES.PRODUCTS}>
+
+                            <FaArrowRight className="text-gray-400" />
+                          </Link>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )
+            }
+             {/* **********************end  for purusharth testing done************************ */}
+
+             {/* *****************************this is for parampara testing *********************************** */}
+              <div  className="container mb-10">
+               <div className="flex items-end pt-8 pb-2 relative border-2">
+                    {/* <img src={collection.banner} alt="" className="z-10 h-16" /> */}
+                    <img src={i3} alt="" className="z-10 h-16" />
+
+                    <div className="flex-grow border-b border-dashed border-white mx-3"></div>
+
+                    <div className="absolute right-[50px] top-0 h-full w-[1px] 
+            bg-[radial-gradient(circle,_white_10%,_transparent_20%)] 
+            bg-repeat-y bg-[length:2px_5px]">
+                    </div>
+                  </div>
+
+            </div>
+
+
+               {
+              paramparaData?.products
+?.length>0 &&(
+                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8  flex flex-row">
+                  {paramparaData.products.map((item, i) => (
+                    <div
+                      key={i}
+                      className="bg-white border-2 border-red-700 rounded-lg shadow-md overflow-hidden transition-transform 
+             duration-300 ease-in-out z-10 hover:translate-y-[-10px] hover:shadow-2xl hover:scale-105"
+            //  onClick={() => handleProductChange(item, collection.title,collection.banner)}
+              onClick={() =>
+  navigate("/newproductview", {
+    state: {
+      titleId: item.titleId,
+      categoryId: item.categoryId,
+      productId: item._id,
+    },
+  })
+}
+             >
+                      <Link
+                        to={{
+                          pathname: ROUTES.PRODUCTS,
+                          // state: { product: item, title: collection.title ,banner:collection.banner},
+                        }}
+                      >
+
+                        <img src={FILE_URL + item.images[0]} alt={item.name} className="w-full h-48 object-cover" />
+
+                      </Link>
+                      <div className="px-4 py-3">
+                        <h3 className="text-lg pb-1 text-[#121212] font-medium">{item.shortTitle|| "no"}</h3>
+                        <p className="text-sm pb-1 text-gray-500 break-words line-clamp-2">
+                          {item.description}
+                        </p>
+                        <p className="text-sm pt-1 text-gray-800">₹{item.price}</p>
+                        <div className="flex justify-end py-2">
+                          <Link to={ROUTES.PRODUCTS}>
+
+                            <FaArrowRight className="text-gray-400" />
+                          </Link>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )
+            }
+
+
+
+
+
+              {/* ***************************** end is for parampara testing *********************************** */}
+                 {/* ***************************** this is start of SS  testing *********************************** */}
+                  <div  className="container mb-10">
+               <div className="flex items-end pt-8 pb-2 relative border-2">
+                    {/* <img src={collection.banner} alt="" className="z-10 h-16" /> */}
+                    <img src={i4} alt="" className="z-10 h-16" />
+
+                    <div className="flex-grow border-b border-dashed border-white mx-3"></div>
+
+                    <div className="absolute right-[50px] top-0 h-full w-[1px] 
+            bg-[radial-gradient(circle,_white_10%,_transparent_20%)] 
+            bg-repeat-y bg-[length:2px_5px]">
+                    </div>
+                  </div>
+
+            </div>
+             {
+              saundaryShrungar?.products
+?.length>0 &&(
+                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8  flex flex-row">
+                  {saundaryShrungar.products.map((item, i) => (
+                    <div
+                      key={i}
+                      className="bg-white border-2 border-red-700 rounded-lg shadow-md overflow-hidden transition-transform 
+             duration-300 ease-in-out z-10 hover:translate-y-[-10px] hover:shadow-2xl hover:scale-105"
+            //  onClick={() => handleProductChange(item, collection.title,collection.banner)}
+          onClick={() =>
+  navigate("/newproductview", {
+    state: {
+      titleId: item.titleId,
+      categoryId: item.categoryId,
+      productId: item._id,
+    },
+  })
+}
+             >
+                      <Link
+                        to={{
+                          pathname: ROUTES.PRODUCTS,
+                          // state: { product: item, title: collection.title ,banner:collection.banner},
+                        }}
+                      >
+
+                        <img src={FILE_URL + item.images[0]} alt={item.name} className="w-full h-48 object-cover" />
+
+                      </Link>
+                      <div className="px-4 py-3">
+                        <h3 className="text-lg pb-1 text-[#121212] font-medium">{item.shortTitle|| "no"}</h3>
+                        <p className="text-sm pb-1 text-gray-500 break-words line-clamp-2">
+                          {item.description}
+                        </p>
+                        <p className="text-sm pt-1 text-gray-800">₹{item.price}</p>
+                        <div className="flex justify-end py-2">
+                          <Link to={ROUTES.PRODUCTS}>
+
+                            <FaArrowRight className="text-gray-400" />
+                          </Link>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )
+            }
+
+
+
+                    {/* ***************************** end is for SS testing *********************************** */}
+                    
+
+                    {/* ************************* this is the start of sushobita ************************* */}
+                      <div  className="container mb-10">
+               <div className="flex items-end pt-8 pb-2 relative border-2">
+                    {/* <img src={collection.banner} alt="" className="z-10 h-16" /> */}
+                    <img src={i5} alt="" className="z-10 h-16" />
+
+                    <div className="flex-grow border-b border-dashed border-white mx-3"></div>
+
+                    <div className="absolute right-[50px] top-0 h-full w-[1px] 
+            bg-[radial-gradient(circle,_white_10%,_transparent_20%)] 
+            bg-repeat-y bg-[length:2px_5px]">
+                    </div>
+                  </div>
+
+            </div>
+             {
+              sushobhitaData?.products
+?.length>0 &&(
+                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8  flex flex-row">
+                  {sushobhitaData.products.map((item, i) => (
+                    <div
+                      key={i}
+                      className="bg-white border-2 border-red-700 rounded-lg shadow-md overflow-hidden transition-transform 
+             duration-300 ease-in-out z-10 hover:translate-y-[-10px] hover:shadow-2xl hover:scale-105"
+            //  onClick={() => handleProductChange(item, collection.title,collection.banner)}
+         onClick={() =>
+  navigate("/newproductview", {
+    state: {
+      titleId: item.titleId,
+      categoryId: item.categoryId,
+      productId: item._id,
+    },
+  })
+}
+             >
+                      <Link
+                        to={{
+                          pathname: ROUTES.PRODUCTS,
+                          // state: { product: item, title: collection.title ,banner:collection.banner},
+                        }}
+                      >
+
+                        <img src={FILE_URL + item.images[0]} alt={item.name} className="w-full h-48 object-cover" />
+
+                      </Link>
+                      <div className="px-4 py-3">
+                        <h3 className="text-lg pb-1 text-[#121212] font-medium">{item.shortTitle|| "no"}</h3>
+                        <p className="text-sm pb-1 text-gray-500 break-words line-clamp-2">
+                          {item.description}
+                        </p>
+                        <p className="text-sm pt-1 text-gray-800">₹{item.price}</p>
+                        <div className="flex justify-end py-2">
+                          <Link to={ROUTES.PRODUCTS}>
+
+                            <FaArrowRight className="text-gray-400" />
+                          </Link>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )
+            }
+
+                    {/* ****************this is the end of sushobita ********************************* */}
+
+                    {/* ***********This is for mahasanskruti proudcts ***********************************  */}
+
+                   <div  className="container mb-10">
+               <div className="flex items-end pt-8 pb-2 relative border-2">
+                    {/* <img src={collection.banner} alt="" className="z-10 h-16" /> */}
+                    <img src={i6} alt="" className="z-10 h-16" />
+
+                    <div className="flex-grow border-b border-dashed border-white mx-3"></div>
+
+                    <div className="absolute right-[50px] top-0 h-full w-[1px] 
+            bg-[radial-gradient(circle,_white_10%,_transparent_20%)] 
+            bg-repeat-y bg-[length:2px_5px]">
+                    </div>
+                  </div>
+
+            </div>
+             {
+              mahaSanskrutiProducts
+?.length>0 &&(
+                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8  flex flex-row">
+                  {mahaSanskrutiProducts.map((item, i) => (
+                    <div
+                      key={i}
+                      className="bg-white border-2 border-red-700 rounded-lg shadow-md overflow-hidden transition-transform 
+             duration-300 ease-in-out z-10 hover:translate-y-[-10px] hover:shadow-2xl hover:scale-105"
+            //  onClick={() => handleProductChange(item, collection.title,collection.banner)}
+            onClick={()=>navigate("/newproductview")}
+             >
+                      <Link
+                        to={{
+                          pathname: ROUTES.PRODUCTS,
+                          // state: { product: item, title: collection.title ,banner:collection.banner},
+                        }}
+                      >
+
+                        <img src={FILE_URL + item.images[0]} alt={item.name} className="w-full h-48 object-cover" />
+
+                      </Link>
+                      <div className="px-4 py-3">
+                        <h3 className="text-lg pb-1 text-[#121212] font-medium">{item.shortTitle|| "no"}</h3>
+                        <p className="text-sm pb-1 text-gray-500 break-words line-clamp-2">
+                          {item.description}
+                        </p>
+                        <p className="text-sm pt-1 text-gray-800">₹{item.price}</p>
+                        <div className="flex justify-end py-2">
+                          <Link to={ROUTES.PRODUCTS}>
+
+                            <FaArrowRight className="text-gray-400" />
+                          </Link>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )
+            }
+
+                    
+                    {/* ***********This is end of  mahasanskruti proudcts ***********************************  */}
+
+                {/* ***********This is start of saundaryachi navi olakh  proudcts ***********************************  */}
+                    <div  className="container mb-10">
+               <div className="flex items-end pt-8 pb-2 relative border-2">
+                    {/* <img src={collection.banner} alt="" className="z-10 h-16" /> */}
+                    <img src={i7} alt="" className="z-10 h-16" />
+
+                    <div className="flex-grow border-b border-dashed border-white mx-3"></div>
+
+                    <div className="absolute right-[50px] top-0 h-full w-[1px] 
+            bg-[radial-gradient(circle,_white_10%,_transparent_20%)] 
+            bg-repeat-y bg-[length:2px_5px]">
+                    </div>
+                  </div>
+
+            </div>
+
+  {
+              modernProducts
+?.length>0 &&(
+                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8  flex flex-row">
+                  {modernProducts.map((item, i) => (
+                    <div
+                      key={i}
+                      className="bg-white border-2 border-red-700 rounded-lg shadow-md overflow-hidden transition-transform 
+             duration-300 ease-in-out z-10 hover:translate-y-[-10px] hover:shadow-2xl hover:scale-105"
+            //  onClick={() => handleProductChange(item, collection.title,collection.banner)}
+            onClick={()=>navigate("/newproductview")}
+             >
+                      <Link
+                        to={{
+                          pathname: ROUTES.PRODUCTS,
+                          // state: { product: item, title: collection.title ,banner:collection.banner},
+                        }}
+                      >
+
+                        <img src={FILE_URL + item.images[0]} alt={item.name} className="w-full h-48 object-cover" />
+
+                      </Link>
+                      <div className="px-4 py-3">
+                        <h3 className="text-lg pb-1 text-[#121212] font-medium">{item.shortTitle|| "no"}</h3>
+                        <p className="text-sm pb-1 text-gray-500 break-words line-clamp-2">
+                          {item.description}
+                        </p>
+                        <p className="text-sm pt-1 text-gray-800">₹{item.price}</p>
+                        <div className="flex justify-end py-2">
+                          <Link to={ROUTES.PRODUCTS}>
+
+                            <FaArrowRight className="text-gray-400" />
+                          </Link>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )
+            }
+
+                  {/* ***********This is start of saundaryachi navi olakh  proudcts ***********************************  */}
+
+
+
+
+
+            </>
+           
 
 
 

@@ -14,6 +14,7 @@ import Gallery from "./pages/gallery/Gallery";
 import ViewGallery from "./pages/gallery/ViewGallery";
 import Collection from "./pages/collection/Collection";
 import { ProductProvider } from "./pages/context/ProductContext";
+import ViewNewProductPage from "./pages/Product/ViewNewProductPage";
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -57,6 +58,7 @@ function AppContent() {
             <Route path={ROUTES.CONTACT} element={<Contact />} />
             <Route path={ROUTES.PRODUCTS} element={<Products />} />
             <Route path={ROUTES.PRODUCTVIEW} element={<ViewProductPage />} />
+            <Route path= {ROUTES.NEWPRODUCTVIEW} element={<ViewNewProductPage/>} />
             <Route path={ROUTES.GALLERY} element={<Gallery />} />
             <Route path={ROUTES.COLLECTIONS} element={<Collection />} />
             <Route path={ROUTES.GALLERYVIEW} element={<ViewGallery />} />
